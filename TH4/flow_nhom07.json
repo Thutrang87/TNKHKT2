@@ -1,0 +1,272 @@
+[
+    {
+        "id": "flow1",
+        "type": "tab",
+        "label": "Bai3 nhom-07"
+    },
+    {
+        "id": "in1",
+        "type": "mqtt in",
+        "z": "flow1",
+        "name": "telemetry",
+        "topic": "aet2025/nhom-07/telemetry",
+        "qos": "0",
+        "datatype": "json",
+        "broker": "broker1",
+        "inputs": 0,
+        "x": 120,
+        "y": 120,
+        "wires": [
+            [
+                "c_temp",
+                "c_hum",
+                "c_up"
+            ]
+        ]
+    },
+    {
+        "id": "c_temp",
+        "type": "change",
+        "z": "flow1",
+        "name": "temp",
+        "rules": [
+            {
+                "t": "set",
+                "p": "payload",
+                "pt": "msg",
+                "to": "payload.temp",
+                "tot": "msg"
+            }
+        ],
+        "x": 320,
+        "y": 60,
+        "wires": [
+            [
+                "g_temp"
+            ]
+        ]
+    },
+    {
+        "id": "c_hum",
+        "type": "change",
+        "z": "flow1",
+        "name": "hum",
+        "rules": [
+            {
+                "t": "set",
+                "p": "payload",
+                "pt": "msg",
+                "to": "payload.hum",
+                "tot": "msg"
+            }
+        ],
+        "x": 320,
+        "y": 120,
+        "wires": [
+            [
+                "ch_hum"
+            ]
+        ]
+    },
+    {
+        "id": "c_up",
+        "type": "change",
+        "z": "flow1",
+        "name": "uptime",
+        "rules": [
+            {
+                "t": "set",
+                "p": "payload",
+                "pt": "msg",
+                "to": "payload.uptime",
+                "tot": "msg"
+            }
+        ],
+        "x": 320,
+        "y": 180,
+        "wires": [
+            [
+                "g_up"
+            ]
+        ]
+    },
+    {
+        "id": "g_temp",
+        "type": "ui_gauge",
+        "z": "flow1",
+        "name": "Nhiet do",
+        "group": "grp1",
+        "order": 1,
+        "width": 3,
+        "height": 3,
+        "gtype": "gage",
+        "title": "Nhiet do",
+        "label": "°C",
+        "format": "{{value}}",
+        "min": 0,
+        "max": 50,
+        "colors": [
+            "#00b500",
+            "#e6e600",
+            "#ca3838"
+        ],
+        "seg1": "",
+        "seg2": "",
+        "x": 520,
+        "y": 60,
+        "wires": []
+    },
+    {
+        "id": "ch_hum",
+        "type": "ui_chart",
+        "z": "flow1",
+        "name": "Do am",
+        "group": "grp1",
+        "order": 2,
+        "width": 6,
+        "height": 4,
+        "label": "Do am (%)",
+        "chartType": "line",
+        "legend": "false",
+        "xformat": "HH:mm:ss",
+        "interpolate": "linear",
+        "nodata": "Cho du lieu...",
+        "dot": false,
+        "ymin": "0",
+        "ymax": "100",
+        "removeOlder": 1,
+        "removeOlderPoints": "",
+        "removeOlderUnit": "3600",
+        "cutout": 0,
+        "useOneColor": false,
+        "useUTC": false,
+        "colors": [
+            "#1f77b4",
+            "#aec7e8",
+            "#ff7f0e",
+            "#2ca02c",
+            "#98df8a",
+            "#d62728",
+            "#ff9896",
+            "#9467bd",
+            "#c5b0d5"
+        ],
+        "outputs": 1,
+        "useDifferentColor": false,
+        "x": 520,
+        "y": 120,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "g_up",
+        "type": "ui_gauge",
+        "z": "flow1",
+        "name": "Uptime",
+        "group": "grp1",
+        "order": 3,
+        "width": 3,
+        "height": 3,
+        "gtype": "gage",
+        "title": "Uptime (giay)",
+        "label": "s",
+        "format": "{{value}}",
+        "min": 0,
+        "max": 3600,
+        "colors": [
+            "#00b500",
+            "#e6e600",
+            "#ca3838"
+        ],
+        "seg1": "",
+        "seg2": "",
+        "x": 520,
+        "y": 180,
+        "wires": []
+    },
+    {
+        "id": "sw1",
+        "type": "ui_switch",
+        "z": "flow1",
+        "name": "LED GPIO14",
+        "label": "LED GPIO14",
+        "tooltip": "",
+        "group": "grp1",
+        "order": 4,
+        "width": 3,
+        "height": 1,
+        "passthru": false,
+        "decouple": "false",
+        "topic": "",
+        "topicType": "str",
+        "style": "",
+        "onvalue": "1",
+        "onvalueType": "str",
+        "onicon": "",
+        "oncolor": "",
+        "offvalue": "0",
+        "offvalueType": "str",
+        "officon": "",
+        "offcolor": "",
+        "animate": false,
+        "x": 130,
+        "y": 280,
+        "wires": [
+            [
+                "out1"
+            ]
+        ]
+    },
+    {
+        "id": "out1",
+        "type": "mqtt out",
+        "z": "flow1",
+        "name": "cmd/led",
+        "topic": "aet2025/nhom-07/cmd/led",
+        "qos": "0",
+        "retain": "false",
+        "broker": "broker1",
+        "x": 340,
+        "y": 280,
+        "wires": []
+    },
+    {
+        "id": "broker1",
+        "type": "mqtt-broker",
+        "name": "Mosquitto",
+        "broker": "test.mosquitto.org",
+        "port": "1883",
+        "clientid": "nodered-nhom07",
+        "autoConnect": true,
+        "usetls": false,
+        "protocolVersion": "4",
+        "keepalive": "60",
+        "cleansession": true
+    },
+    {
+        "id": "grp1",
+        "type": "ui_group",
+        "name": "ESP32 nhom-07",
+        "tab": "tab1",
+        "order": 1,
+        "disp": true,
+        "width": "6",
+        "collapse": false
+    },
+    {
+        "id": "tab1",
+        "type": "ui_tab",
+        "name": "Nhom 7",
+        "icon": "dashboard",
+        "order": 1
+    },
+    {
+        "id": "1079f7114c761bb2",
+        "type": "global-config",
+        "env": [],
+        "modules": {
+            "node-red-dashboard": "3.6.6"
+        }
+    }
+]
